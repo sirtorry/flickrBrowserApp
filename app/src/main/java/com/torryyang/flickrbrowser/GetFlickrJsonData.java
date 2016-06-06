@@ -92,6 +92,10 @@ public class GetFlickrJsonData extends GetRawData {
         }
     }
 
+    public List<Photo> getmPhotos() {
+        return mPhotos;
+    }
+
     public class DownloadJsonData extends DownloadRawData {
 
         protected void onPostExecute(String webData) {
@@ -101,7 +105,8 @@ public class GetFlickrJsonData extends GetRawData {
         }
 
         protected String doInBackground(String... params) {
-            return super.doInBackground(params);
+            String[] par = {mDestinationUri.toString()};
+            return super.doInBackground(par);
         }
 
     }
