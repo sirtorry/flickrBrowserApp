@@ -1,9 +1,11 @@
 package com.torryyang.flickrbrowser;
 
-/**
- * Created by Torry on 05/06/2016.
- */
-public class Photo {
+import java.io.Serializable;
+
+public class Photo implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+
     private String mTitle;
     private String mAuthor;
     private String mAuthorId;
@@ -11,37 +13,41 @@ public class Photo {
     private String mTags;
     private String mImage;
 
-    public Photo(String mTitle, String mAuthor, String mAuthorId, String mTags, String mLink, String mImage) {
+    public Photo(String mTitle, String mAuthor, String mAuthorId, String mLink, String mTags, String mImage) {
         this.mTitle = mTitle;
         this.mAuthor = mAuthor;
         this.mAuthorId = mAuthorId;
-        this.mTags = mTags;
         this.mLink = mLink;
+        this.mTags = mTags;
         this.mImage = mImage;
     }
 
-    public String getmImage() {
-        return mImage;
+    public static long getSerialVersionUID() {
+        return serialVersionUID;
     }
 
-    public String getmTitle() {
+    public String getTitle() {
         return mTitle;
     }
 
-    public String getmAuthor() {
+    public String getAuthor() {
         return mAuthor;
     }
 
-    public String getmAuthorId() {
+    public String getAuthorId() {
         return mAuthorId;
     }
 
-    public String getmLink() {
+    public String getLink() {
         return mLink;
     }
 
-    public String getmTags() {
+    public String getTags() {
         return mTags;
+    }
+
+    public String getImage() {
+        return mImage;
     }
 
     @Override
@@ -52,7 +58,7 @@ public class Photo {
                 ", mAuthorId='" + mAuthorId + '\'' +
                 ", mLink='" + mLink + '\'' +
                 ", mTags='" + mTags + '\'' +
-                ", mImage=" + mImage +
+                ", mImage='" + mImage + '\'' +
                 '}';
     }
 }

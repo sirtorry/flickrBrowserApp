@@ -10,9 +10,6 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by Torry on 05/06/2016.
- */
 public class GetFlickrJsonData extends GetRawData {
 
     private String LOG_TAG = GetFlickrJsonData.class.getSimpleName();
@@ -21,8 +18,8 @@ public class GetFlickrJsonData extends GetRawData {
 
     public GetFlickrJsonData(String searchCriteria, boolean matchAll) {
         super(null);
-        createAndUpdateUri(searchCriteria, matchAll);
-        mPhotos = new ArrayList<>();
+        createAndUpdateUri(searchCriteria,matchAll);
+        mPhotos = new ArrayList<Photo>();
     }
 
     public void execute() {
@@ -49,9 +46,14 @@ public class GetFlickrJsonData extends GetRawData {
         return mDestinationUri != null;
     }
 
+    public List<Photo> getPhotos() {
+        return mPhotos;
+    }
+
     public void processResult() {
+
         if(getmDownloadStatus() != DownloadStatus.OK) {
-            Log.e(LOG_TAG, "error downloading raw");
+            Log.e(LOG_TAG, "Error downloading raw file");
             return;
         }
 
@@ -65,20 +67,24 @@ public class GetFlickrJsonData extends GetRawData {
         final String FLICKR_TAGS = "tags";
 
         try {
+
             JSONObject jsonData = new JSONObject(getmData());
             JSONArray itemsArray = jsonData.getJSONArray(FLICKR_ITEMS);
             for(int i=0; i<itemsArray.length(); i++) {
+
                 JSONObject jsonPhoto = itemsArray.getJSONObject(i);
                 String title = jsonPhoto.getString(FLICKR_TITLE);
                 String author = jsonPhoto.getString(FLICKR_AUTHOR);
                 String authorId = jsonPhoto.getString(FLICKR_AUTHOR_ID);
-                String link = jsonPhoto.getString(FLICKR_LINK);
+//                String link = jsonPhoto.getString(FLICKR_LINK);
                 String tags = jsonPhoto.getString(FLICKR_TAGS);
 
                 JSONObject jsonMedia = jsonPhoto.getJSONObject(FLICKR_MEDIA);
                 String photoUrl = jsonMedia.getString(FLICKR_PHOTO_URL);
+                String link = photoUrl.replaceFirst("_m.","_b.");
 
                 Photo photoObject = new Photo(title, author, authorId, link, tags, photoUrl);
+
                 this.mPhotos.add(photoObject);
             }
 
@@ -88,12 +94,9 @@ public class GetFlickrJsonData extends GetRawData {
 
         } catch(JSONException jsone) {
             jsone.printStackTrace();
-            Log.e(LOG_TAG, "Error processing Json data");
+            Log.e(LOG_TAG,"Error processing Json data");
         }
-    }
 
-    public List<Photo> getmPhotos() {
-        return mPhotos;
     }
 
     public class DownloadJsonData extends DownloadRawData {
@@ -105,9 +108,10 @@ public class GetFlickrJsonData extends GetRawData {
         }
 
         protected String doInBackground(String... params) {
-            String[] par = {mDestinationUri.toString()};
+            String[] par = { mDestinationUri.toString() };
             return super.doInBackground(par);
         }
 
     }
+
 }

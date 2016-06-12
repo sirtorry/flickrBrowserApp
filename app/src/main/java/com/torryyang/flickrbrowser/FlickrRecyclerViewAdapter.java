@@ -1,5 +1,6 @@
 package com.torryyang.flickrbrowser;
 
+
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -11,21 +12,19 @@ import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
-/**
- * Created by Torry on 06/06/2016.
- */
 public class FlickrRecyclerViewAdapter extends RecyclerView.Adapter<FlickrImageViewHolder> {
-    private List<Photo> mphotoList;
+    private List<Photo> mPhotosList;
     private Context mContext;
     private final String LOG_TAG = FlickrRecyclerViewAdapter.class.getSimpleName();
 
-    public FlickrRecyclerViewAdapter(Context mContext, List<Photo> mphotoList) {
-        this.mphotoList = mphotoList;
-        this.mContext = mContext;
+    public FlickrRecyclerViewAdapter(Context context, List<Photo> photosList) {
+        mContext = context;
+        this.mPhotosList = photosList;
     }
 
     @Override
     public FlickrImageViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
+
         View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.browse, null);
         FlickrImageViewHolder flickrImageViewHolder = new FlickrImageViewHolder(view);
         return flickrImageViewHolder;
@@ -33,22 +32,27 @@ public class FlickrRecyclerViewAdapter extends RecyclerView.Adapter<FlickrImageV
 
     @Override
     public void onBindViewHolder(FlickrImageViewHolder flickrImageViewHolder, int i) {
-        Photo photoItem = mphotoList.get(i);
-        Log.d(LOG_TAG,"processing " + photoItem.getmTitle());
-        Picasso.with(mContext).load(photoItem.getmImage())
+        Photo photoItem = mPhotosList.get(i);
+        Log.d(LOG_TAG,"Processing: " + photoItem.getTitle() + " --> " + Integer.toString(i));
+
+        Picasso.with(mContext).load(photoItem.getImage())
                 .error(R.drawable.placeholder)
                 .placeholder(R.drawable.placeholder)
                 .into(flickrImageViewHolder.thumbnail);
-        flickrImageViewHolder.title.setText(photoItem.getmTitle());
+        flickrImageViewHolder.title.setText(photoItem.getTitle());
     }
 
     @Override
     public int getItemCount() {
-        return (null !=  mphotoList ? mphotoList.size():0);
+        return (null != mPhotosList ? mPhotosList.size() : 0);
     }
 
     public void loadNewData(List<Photo> newPhotos) {
-        mphotoList = newPhotos;
+        mPhotosList = newPhotos;
         notifyDataSetChanged();
+    }
+
+    public Photo getPhoto(int position) {
+        return (null != mPhotosList ? mPhotosList.get(position) : null);
     }
 }

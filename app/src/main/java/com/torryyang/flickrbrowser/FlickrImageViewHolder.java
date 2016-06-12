@@ -5,9 +5,6 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-/**
- * Created by Torry on 06/06/2016.
- */
 public class FlickrImageViewHolder extends RecyclerView.ViewHolder {
     protected ImageView thumbnail;
     protected TextView title;
